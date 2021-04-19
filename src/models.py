@@ -10,6 +10,8 @@ class ProductType(Base):
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     name = Column(String)
 
+    products = relationship("Product", back_populates="product_type")
+
 
 class Product(Base):
     __tablename__ = "product"
@@ -18,4 +20,4 @@ class Product(Base):
     name = Column(String)
     product_type_id = Column(Integer, ForeignKey("product_type.id"))
 
-    product_type = relationship("ProductType", back_populates="product")
+    product_type = relationship("ProductType", back_populates="products")
