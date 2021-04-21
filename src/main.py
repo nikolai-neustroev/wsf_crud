@@ -27,7 +27,7 @@ def create_product_type(product_type: schemas.ProductTypeCreate, db: Session = D
     return crud.create_product_type(db=db, product_type=product_type)
 
 
-@app.get("/product_type/", response_model=List[schemas.ProductType])
+@app.get("/product_types/", response_model=List[schemas.ProductType])
 def read_product_types(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     product_types = crud.get_product_types(db, skip=skip, limit=limit)
     return product_types

@@ -53,3 +53,15 @@ def test_create_product_type():
     data = response.json()
     assert data["name"] == "Something"
     assert data["id"] == product_type_id
+
+
+def test_read_product_types():
+    client.post(
+        "/product_type/",
+        json={"name": "Something else"},
+    )
+    response = client.get("/product_types/")
+    assert response.status_code == 200, response.text
+    data = response.json()
+    assert data[0]['name'] == "Something"
+    assert data[1]['name'] == "Something else"
