@@ -19,6 +19,7 @@ def get_db():
         db.close()
 
 
+# Product Type
 @app.post("/product_type/", response_model=schemas.ProductType)
 def create_product_type(product_type: schemas.ProductTypeCreate, db: Session = Depends(get_db)):
     db_product_type = crud.get_product_type_by_name(db, name=product_type.name)
@@ -49,6 +50,7 @@ def read_product_type(product_type_id: int, db: Session = Depends(get_db)):
     return db_product_type
 
 
+# Product
 @app.post("/product/", response_model=schemas.Product)
 def create_product(product: schemas.ProductCreate, db: Session = Depends(get_db)):
     db_product = crud.get_product_by_name(db, name=product.name)
@@ -77,3 +79,31 @@ def read_product(product_id: int, db: Session = Depends(get_db)):
     if db_product is None:
         raise HTTPException(status_code=404, detail="Product not found")
     return db_product
+
+
+# Transaction
+@app.post("/transaction/", response_model=schemas.Transaction)
+def create_transaction(transaction: schemas.TransactionCreate, db: Session = Depends(get_db)):
+    return crud.create_transaction(db=db, transaction=transaction)
+
+
+@app.get("/transactions/", response_model=List[schemas.Transaction])
+def read_transactions(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+    transactions = crud.get_transactions(db, skip=skip, limit=limit)
+    return transactions
+
+
+@app.get("/transactions/recipient/{recipient_code}", response_model=schemas.Transaction)
+def read_transactions_by_recipient(recipient: str, db: Session = Depends(get_db)):
+    db_transactions = crud.get_transactions_by_recipient(db, recipient=recipient)
+    if db_transactions is None:
+        raise HTTPException(status_code=404, detail="Transactions not found")
+    return db_transactions
+
+
+@app.get("/transaction/id/{transaction_id}", response_model=schemas.Transaction)
+def read_transaction(transaction_id: int, db: Session = Depends(get_db)):
+    db_transaction = crud.get_transaction(db, transaction_id=transaction_id)
+    if db_transaction is None:
+        raise HTTPException(status_code=404, detail="Transaction not found")
+    return db_transaction

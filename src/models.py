@@ -21,3 +21,10 @@ class Product(Base):
     product_type_id = Column(Integer, ForeignKey("tbl_product_type.id"))
 
     product_type = relationship("ProductType", back_populates="products")
+
+
+class Transaction(Base):
+    __tablename__ = "tbl_transaction"
+
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    recipient = Column(String)

@@ -92,3 +92,17 @@ def test_read_products():
     data = response.json()
     assert data[0]['name'] == "a name of a product"
     assert data[1]['name'] == "a name of another product"
+
+
+def test_create_transaction():
+    response = client.post("/transaction/", json={"recipient": "АМ240191ЖЖМ"})
+    assert response.status_code == 200, response.text
+    data = response.json()
+    assert data['recipient'] == "АМ240191ЖЖМ"
+    assert "id" in data
+    transaction_id = data["id"]
+
+    response = client.get(f"/transaction/id/{transaction_id}")
+    assert response.status_code == 200, response.text
+    data = response.json()
+    assert data["recipient"] == "АМ240191ЖЖМ"
