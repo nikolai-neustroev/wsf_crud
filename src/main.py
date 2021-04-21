@@ -57,13 +57,13 @@ def create_product(product: schemas.ProductCreate, db: Session = Depends(get_db)
     return crud.create_product(db=db, product=product)
 
 
-@app.get("/product/", response_model=List[schemas.Product])
+@app.get("/products/", response_model=List[schemas.Product])
 def read_products(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     products = crud.get_products(db, skip=skip, limit=limit)
     return products
 
 
-@app.get("/product/{product_name}", response_model=schemas.Product)
+@app.get("/product/name/{product_name}", response_model=schemas.Product)
 def read_product_by_name(product_name: str, db: Session = Depends(get_db)):
     db_product = crud.get_product_by_name(db, name=product_name)
     if db_product is None:
@@ -71,9 +71,9 @@ def read_product_by_name(product_name: str, db: Session = Depends(get_db)):
     return db_product
 
 
-@app.get("/product_type/{product_id}", response_model=schemas.Product)
-def read_product_type(product_id: int, db: Session = Depends(get_db)):
+@app.get("/product/id/{product_id}", response_model=schemas.Product)
+def read_product(product_id: int, db: Session = Depends(get_db)):
     db_product = crud.get_product(db, product_id=product_id)
     if db_product is None:
-        raise HTTPException(status_code=404, detail="Product type not found")
+        raise HTTPException(status_code=404, detail="Product not found")
     return db_product

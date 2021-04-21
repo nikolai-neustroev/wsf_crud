@@ -46,12 +46,10 @@ def test_create_product_type():
     assert response.status_code == 200, response.text
     data = response.json()
     assert data["name"] == "Something"
-    assert data["id"] == product_type_id
 
     response = client.get(f"/product_type/name/{product_type_name}")
     assert response.status_code == 200, response.text
     data = response.json()
-    assert data["name"] == "Something"
     assert data["id"] == product_type_id
 
 
@@ -73,4 +71,24 @@ def test_create_product():
     data = response.json()
     assert data['name'] == "a name of a product"
     assert data['product_type_id'] == 1
-    assert data["id"] == 1
+    assert "id" in data
+    product_id = data["id"]
+
+    response = client.get(f"/product/id/{product_id}")
+    assert response.status_code == 200, response.text
+    data = response.json()
+    assert data["name"] == "a name of a product"
+
+    response = client.get(f"/product/name/{'a name of a product'}")
+    assert response.status_code == 200, response.text
+    data = response.json()
+    assert data["id"] == product_id
+
+
+def test_read_products():
+    client.post("/product/", json={"name": "a name of another product", "product_type_id": 1})
+    response = client.get("/products/")
+    assert response.status_code == 200, response.text
+    data = response.json()
+    assert data[0]['name'] == "a name of a product"
+    assert data[1]['name'] == "a name of another product"

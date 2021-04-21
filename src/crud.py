@@ -24,7 +24,7 @@ def create_product_type(db: Session, product_type: schemas.ProductType):
 
 
 def get_product(db: Session, product_id: int):
-    return db.query(models.Product).filter(models.Product.id == product_id).first()
+    return db.query(models.Product).get(product_id)
 
 
 def get_product_by_name(db: Session, name: str):
