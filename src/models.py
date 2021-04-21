@@ -5,7 +5,7 @@ from src.database import Base
 
 
 class ProductType(Base):
-    __tablename__ = "product_type"
+    __tablename__ = "tbl_product_type"
 
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     name = Column(String, unique=True, index=True)
@@ -14,10 +14,10 @@ class ProductType(Base):
 
 
 class Product(Base):
-    __tablename__ = "product"
+    __tablename__ = "tbl_product"
 
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     name = Column(String, unique=True, index=True)
-    product_type_id = Column(Integer, ForeignKey("product_type.id"))
+    product_type_id = Column(Integer, ForeignKey("tbl_product_type.id"))
 
     product_type = relationship("ProductType", back_populates="products")
