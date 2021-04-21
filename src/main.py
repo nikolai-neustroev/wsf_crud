@@ -33,7 +33,7 @@ def read_product_types(skip: int = 0, limit: int = 100, db: Session = Depends(ge
     return product_types
 
 
-@app.get("/product_type/{product_type_name}", response_model=schemas.ProductType)
+@app.get("/product_type/name/{product_type_name}", response_model=schemas.ProductType)
 def read_product_type_by_name(product_type_name: str, db: Session = Depends(get_db)):
     db_product_type = crud.get_product_type_by_name(db, name=product_type_name)
     if db_product_type is None:
@@ -41,9 +41,9 @@ def read_product_type_by_name(product_type_name: str, db: Session = Depends(get_
     return db_product_type
 
 
-@app.get("/product_type/{product_type_id}", response_model=schemas.ProductType)
+@app.get("/product_type/id/{product_type_id}", response_model=schemas.ProductType)
 def read_product_type(product_type_id: int, db: Session = Depends(get_db)):
-    db_product_type = crud.get_product_type(db, product_type_id=product_type_id)
+    db_product_type = crud.get_product_type_by_id(db, product_type_id=product_type_id)
     if db_product_type is None:
         raise HTTPException(status_code=404, detail="Product type not found")
     return db_product_type

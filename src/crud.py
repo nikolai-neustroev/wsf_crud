@@ -3,8 +3,8 @@ from sqlalchemy.orm import Session
 from src import models, schemas
 
 
-def get_product_type(db: Session, product_type_id: int):
-    return db.query(models.ProductType).filter(models.ProductType.id == product_type_id).first()
+def get_product_type_by_id(db: Session, product_type_id: int):
+    return db.query(models.ProductType).get(product_type_id)
 
 
 def get_product_type_by_name(db: Session, name: str):
