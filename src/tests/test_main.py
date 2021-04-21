@@ -106,3 +106,31 @@ def test_create_transaction():
     assert response.status_code == 200, response.text
     data = response.json()
     assert data["recipient"] == "АМ240191ЖЖМ"
+
+
+def test_create_cart():
+    response = client.post("/cart/", json={"product_id": 1, "quantity": 5})
+    assert response.status_code == 200, response.text
+    data = response.json()
+    assert data['product_id'] == 1
+    assert data['quantity'] == 5
+    assert "id" in data
+    cart_id = data["id"]
+
+    response = client.get(f"/cart/id/{cart_id}")
+    assert response.status_code == 200, response.text
+    data = response.json()
+    assert data['product_id'] == 1
+    assert data['quantity'] == 5
+    print(data)
+
+    response = client.get(f"/product/id/{1}")
+    assert response.status_code == 200, response.text
+    data = response.json()
+    assert data['quantity'] == 5
+
+    response = client.get(f"/transaction/id/{1}")
+    assert response.status_code == 200, response.text
+    data = response.json()
+    assert data['product_id'] == 1
+    assert data['quantity'] == 5

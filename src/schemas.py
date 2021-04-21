@@ -86,3 +86,26 @@ class Transaction(TransactionBase):
 
     class Config:
         orm_mode = True
+
+
+class CartBase(BaseModel):
+    product_id: int
+    quantity: int
+
+    @validator('quantity')
+    def is_gt_zero(cls, v):
+        if v <= 0:
+            raise ValueError('Quantity should be greater than 0.')
+        return v
+
+
+class CartCreate(CartBase):
+    pass
+
+
+class Cart(CartBase):
+    id: int
+    transaction_id: Transaction
+
+    class Config:
+        orm_mode = True

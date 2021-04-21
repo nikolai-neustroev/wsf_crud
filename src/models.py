@@ -28,3 +28,14 @@ class Transaction(Base):
 
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     recipient = Column(String)
+
+
+class Cart(Base):
+    __tablename__ = "tbl_cart"
+
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    transaction_id = Column(Integer, ForeignKey("tbl_transaction.id"))
+    product_id = Column(Integer, ForeignKey("tbl_product.id"))
+    quantity = Column(Integer)
+
+    transaction = relationship("Transaction")

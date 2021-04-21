@@ -65,3 +65,24 @@ def create_transaction(db: Session, transaction: schemas.TransactionCreate):
     db.commit()
     db.refresh(db_transaction)
     return db_transaction
+
+
+# Cart
+def get_cart(db: Session, cart_id: int):
+    return db.query(models.Cart).get(cart_id)
+
+
+def get_cart_by_transaction(db: Session, transaction_id: int):
+    return db.query(models.Cart).filter(models.Cart.transaction_id == transaction_id).first()
+
+
+def get_cart_by_product_id(db: Session, product_id: int):
+    return db.query(models.Cart).filter(models.Cart.product_id == product_id).first()
+
+
+def create_cart(db: Session, cart: schemas.CartCreate):
+    db_cart = models.Cart(product_id=cart.product_id, quantity=cart.quantity)
+    db.add(db_cart)
+    db.commit()
+    db.refresh(db_cart)
+    return db_cart

@@ -107,3 +107,33 @@ def read_transaction(transaction_id: int, db: Session = Depends(get_db)):
     if db_transaction is None:
         raise HTTPException(status_code=404, detail="Transaction not found")
     return db_transaction
+
+
+# Cart
+@app.post("/cart/", response_model=schemas.Cart)
+def create_cart(cart: schemas.CartCreate, db: Session = Depends(get_db)):
+    return crud.create_cart(db=db, cart=cart)
+
+
+@app.get("/cart/transaction/{transaction_id}", response_model=schemas.Cart)
+def read_cart_by_transaction(transaction_id: int, db: Session = Depends(get_db)):
+    db_cart = crud.get_cart_by_transaction(db, transaction_id=transaction_id)
+    if db_cart is None:
+        raise HTTPException(status_code=404, detail="Cart not found")
+    return db_cart
+
+
+@app.get("/cart/product/{product_id}", response_model=schemas.Cart)
+def read_cart_by_product(product_id: int, db: Session = Depends(get_db)):
+    db_cart = crud.get_cart_by_product_id(db, product_id=product_id)
+    if db_cart is None:
+        raise HTTPException(status_code=404, detail="Cart not found")
+    return db_cart
+
+
+@app.get("/cart/id/{cart_id}", response_model=schemas.Cart)
+def read_transaction(cart_id: int, db: Session = Depends(get_db)):
+    db_cart = crud.get_cart(db, cart_id=cart_id)
+    if db_cart is None:
+        raise HTTPException(status_code=404, detail="Cart not found")
+    return db_cart
