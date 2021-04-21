@@ -65,3 +65,12 @@ def test_read_product_types():
     data = response.json()
     assert data[0]['name'] == "Something"
     assert data[1]['name'] == "Something else"
+
+
+def test_create_product():
+    response = client.post("/product/", json={"name": "a name of a product", "product_type_id": 1})
+    assert response.status_code == 200, response.text
+    data = response.json()
+    assert data['name'] == "a name of a product"
+    assert data['product_type_id'] == 1
+    assert data["id"] == 1

@@ -50,7 +50,7 @@ def read_product_type(product_type_id: int, db: Session = Depends(get_db)):
 
 
 @app.post("/product/", response_model=schemas.Product)
-def create_product_type(product: schemas.ProductCreate, db: Session = Depends(get_db)):
+def create_product(product: schemas.ProductCreate, db: Session = Depends(get_db)):
     db_product = crud.get_product_by_name(db, name=product.name)
     if db_product:
         raise HTTPException(status_code=400, detail="Name already occupied")
